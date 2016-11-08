@@ -5,8 +5,32 @@ var DBConnection=require('../Connection/DBConnection');
 DBConnection();
 /* Adding the movies in the database */
 router.route('/AddMovie').post(function(req, res, next) {
+	var result=[];
+		req.body.Description="No Description yet. Please Update.";
+		req.body.Rating="Default Rating - 3.0";
+
 	if(req.body){
-		var movieVar = new movie(req.body);
+		var cursor=db.collection('addmovies').find({},{__v:false, _id:false});
+		console.log(cursor);
+		cursor.forEach(function(data,err){
+		if(err){
+			console.log(err);
+		}
+		result.push(data);
+		console.log(result);
+
+	},
+	function(){
+		var index=result.findIndex(function(element){
+			return element.imdbID===req.body.imdbID;
+		});
+		if(index!==-1){
+			console.log("Movie Already Added as Favourite");
+			res.send("Movie Already Added as Favourite");
+		}
+
+		else{
+			var movieVar = new movie(req.body);
 		console.log(req.body);
 		console.log(movieVar);
 		movieVar.save(function(err){
@@ -18,6 +42,8 @@ router.route('/AddMovie').post(function(req, res, next) {
 				res.send("Movie Added");
 			}
 		});
+		}
+	});
 	}
 
 });
@@ -58,7 +84,7 @@ router.route('/GetMovies').get(function(req,res){
 router.route('/UpdateMovie').put(function(req,res){
 	if(req.body){
 		console.log(req.body);
-		db.collection('addmovies').update({'ID':req.body.ID},req.body)
+		db.collection('addmovies').update({'imdbID':req.body.imdbID},{$set : {'Rating' : req.body.Rating, 'Description' : req.body.Description}})
 		res.send("Updated");
 	}
 	else{
@@ -71,11 +97,11 @@ router.route('/UpdateMovie').put(function(req,res){
 router.route('/DeleteMovie').delete(function(req,res){
 	if(req.body){
 		console.log(req.body);
-		db.collection('addmovies').remove({'ID':req.body.ID});
+		db.collection('addmovies').remove({'imdbID':req.body.imdbID});
 		res.send("Deleted the given movie");
 	}
 	else{
-		console.log("Nothing ing body");
+		console.log("Nothing in body");
 		res.send("Please enter a movie object");
 	}
 });

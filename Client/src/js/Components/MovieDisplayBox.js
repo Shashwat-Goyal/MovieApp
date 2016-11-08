@@ -4,7 +4,6 @@ var MovieDisplayBox=React.createClass({
 	
 	addMovie: function(e){
 		e.preventDefault();
-		alert('entering');
 		var url="http://localhost:8085/movie/AddMovie";
 		var AddObject={};
 		AddObject.imdbID=this.props.imdbID;
@@ -20,6 +19,7 @@ var MovieDisplayBox=React.createClass({
 			data:AddObject,
 			success:function(data){
 				console.log(data);
+				alert(data);
 			}.bind(this),
 			error:function(err){
 				console.log(err);

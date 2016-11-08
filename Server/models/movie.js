@@ -5,7 +5,9 @@ var AddMoviesSchema = new Schema({
 	imdbID:String,
 	Title:String,
 	Year:String,
-	Poster:String
+	Poster:String,
+	Description:String,
+	Rating:String
 });
 
 //addMovies = mongoose.model('AddMovies', AddMoviesSchema );

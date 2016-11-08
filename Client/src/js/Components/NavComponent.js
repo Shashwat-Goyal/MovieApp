@@ -1,4 +1,5 @@
 var React=require('react');
+var {Link, IndexLink}=require('react-router');
 var NavComponent=React.createClass({
 	render:function(){
 		return (
@@ -16,16 +17,19 @@ var NavComponent=React.createClass({
 				<div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul className="nav navbar-nav">
 						<li className="active">
-							<a href="#"> Home </a>
+							<IndexLink to="/"> Home </IndexLink>
 						</li>
 						<li>
-							<a href="#"> About </a>
+							<Link to="/about"> About </Link>
+						</li>
+						<li>
+							<Link to="/contactUs"> Contact Us </Link>
 						</li>
 						<li className="dropdown">
 							 <a href="#" className="dropdown-toggle" data-toggle="dropdown"> Actions <strong className="caret"></strong></a>
 							<ul className="dropdown-menu">
 								<li>
-									<a href="#"> Get Favourite Movies </a>
+									<Link to="/getFavourites"> Get Favourite Movies </Link>
 								</li>
 								<li className="divider">
 								</li>

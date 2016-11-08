@@ -1,57 +1,32 @@
 var React=require('react');
 var ReactDOM=require('react-dom');
-var SearchComponent=require('./Components/SearchComponent');
-var DisplayComponent=require('./Components/DisplayComponent');
+var {Router, Route, hashHistory, IndexRoute}=require('react-router');
+var ParentComponent=require('./Components/ParentComponent');
+var About=require('./Components/About');
+var Contact=require('./Components/Contact');
 var NavComponent=require('./Components/NavComponent');
+var Favourites=require('./Components/Favourites');
 //var arr={};
+
 var MainComponent=React.createClass({
-	handleAjaxCall:function(movieName){
-		//var that=this;
-		
-		var url="https://omdbapi.com/?s="+movieName;
-		
-		$.ajax({
-			url:url,
-			type:'GET',
-			dataType:'JSON',
-			success: function(data){
-				this.setState({movies:data.Search});
-			}.bind(this),
-			error:function(err){
-				console.log(err);
-			}.bind(this)
-
-		});
-		/*$.getJSON(url, function(jsonData){
-			console.log(jsonData.Search);
-			alert("entering");
-			//arr=jsonData;
-			/*
-			for(var keys in jsonData){
-				arr.push(jsonData[keys]);
-			}
-			console.log(arr.length);
-			that.setState({movies:jsonData.Search});
-		});*/
-		
-	},
-
-	getInitialState:function(){
-		return({
-			movies:[]
-			});
-	},
-
-	render: function(){
-		return (
+	render:function(){
+		return(
 			<div>
 				<NavComponent />
-				<SearchComponent onSearch={this.handleAjaxCall} />
-				<DisplayComponent movieObj={this.state.movies}></DisplayComponent>
+				{this.props.children}
 			</div>
 			);
 	}
 });
 
-ReactDOM.render(<MainComponent />, 
+ReactDOM.render(
+
+	<Router history={hashHistory}>
+	<Route path="/" component={MainComponent} >
+	<Route path="getFavourites" component={Favourites}></Route>
+	<Route path="about" component={About} ></Route>
+	<Route path="contactUs" component={Contact}></Route>
+	<IndexRoute component={ParentComponent}></IndexRoute>
+	</Route>
+	</Router>, 
 	document.getElementById('app')); //puts the virtual dom & injects into the main physical DOM. 
